@@ -1,6 +1,24 @@
 DIGITS = '0123456789'
 OPERATORS = '+-*/^%'
 
+
+class Node:
+  __slots__ = 'left, right, data'
+
+  def Node(self):
+    left = None
+    right = None
+    data = 0
+
+  def Node(self, left, data, right):
+    self.left = left
+    self.data = data
+    self.right = right
+
+  def Node(self, data):
+    self(None, data, None)
+
+
 def tokenize(base):
   tokens = []
   base.replace(' ', '')
