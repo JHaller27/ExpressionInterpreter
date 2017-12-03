@@ -12,11 +12,11 @@ def tokenize(base):
     elif ch is '(':
       token = []
       idx += 1
+      ch = base[idx]
       while ch is not ')':
+        token.append(ch)
         idx += 1
         ch = base[idx]
-        token.append(ch)
-      idx += 1
       tokens.append(token)
     idx += 1
   return tokens
