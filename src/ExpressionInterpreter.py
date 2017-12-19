@@ -10,10 +10,13 @@ class Node:
         self.left = left
         self.right = right
 
+    def __str__(self):
+        return format('(%s <- %s -> %s)' % (self.left, self.data, self.right))
+
 
 def tokenize(base):
     tokens = []
-    base.replace(' ', '')
+    base = base.replace(' ', '')
     idx = 0
     while idx < len(base):
         ch = base[idx]
@@ -37,14 +40,10 @@ def tokenize(base):
 
         # Handle parens
         elif ch is '(':
-            token = []
-            idx += 1
-            ch = base[idx]
-            while ch is not ')':
-                token.append(ch)
-                idx += 1
-                ch = base[idx]
-            tokens.append(token)
+            end_idx = base.rfind(')')
+            paren_text = base[idx+1:end_idx]
+            tokens.append(tokenize(paren_text))
+            idx = end_idx + 1
     return tokens
 
 
