@@ -1,4 +1,4 @@
-DIGITS = '0123456789'
+DIGITS = '0123456789.'
 OPERATORS = '+-*/^%'
 
 
@@ -17,8 +17,25 @@ def tokenize(base):
     idx = 0
     while idx < len(base):
         ch = base[idx]
-        if ch in DIGITS or ch in OPERATORS:
+
+        # Handle operator
+        if ch in OPERATORS:
             tokens.append(ch)
+            idx += 1
+
+        # Handle numbers
+        elif ch in DIGITS:
+            token = ''
+            while ch in DIGITS:
+                token += ch
+                idx += 1
+                if idx < len(base):
+                    ch = base[idx]
+                else:
+                    break
+            tokens.append(token)
+
+        # Handle parens
         elif ch is '(':
             token = []
             idx += 1
@@ -28,7 +45,6 @@ def tokenize(base):
                 idx += 1
                 ch = base[idx]
             tokens.append(token)
-        idx += 1
     return tokens
 
 
