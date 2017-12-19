@@ -40,10 +40,22 @@ def tokenize(base):
 
         # Handle parens
         elif ch is '(':
-            end_idx = base.rfind(')')
-            paren_text = base[idx+1:end_idx]
+            paren_text = ''
+            paren_num = 1
+            while paren_num > 0:
+                idx += 1
+                ch = base[idx]
+                if ch is '(':
+                    paren_num += 1
+                    paren_text += ch
+                elif ch is ')':
+                    paren_num -= 1
+                    if paren_num is not 0:
+                        paren_text += ch
+                else:
+                    paren_text += ch
             tokens.append(tokenize(paren_text))
-            idx = end_idx + 1
+            idx += 1
     return tokens
 
 
