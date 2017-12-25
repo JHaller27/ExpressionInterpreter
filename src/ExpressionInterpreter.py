@@ -59,6 +59,22 @@ def tokenize(base):
     return tokens
 
 
+def generate_tree(tokens: list) -> Node:
+    # Priorities: digit=-1, +-=0, */=1, ^=2, ()=3
+    priorities = []
+    for idx, val in enumerate(tokens):
+        pri = -1
+        if type(val) is list:
+            pri = 3
+        elif val in '^':
+            pri = 2
+        elif val in '*/':
+            pri = 1
+        elif val in '+-':
+            pri = 0
+        priorities[idx] = pri
+
+
 def main():
     s = input('Input expression >> ')
     print(tokenize(s))
