@@ -74,7 +74,7 @@ def generate_tree(tokens: list) -> Node:
             pri = 3
         elif val in '^':
             pri = 2
-        elif val in '*/':
+        elif val in '*/%':
             pri = 1
         elif val in '+-':
             pri = 0
