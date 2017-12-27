@@ -5,7 +5,7 @@ OPERATORS = '+-*/^%'
 class Node:
     __slots__ = ['data', 'left', 'right']
 
-    def __init__(self, data=None, left=None, right=0):
+    def __init__(self, data=None, left=None, right=None):
         self.data = data
         self.left = left
         self.right = right
@@ -60,10 +60,12 @@ def tokenize(base):
 
 
 def generate_tree(tokens: list) -> Node:
-    # Priorities: digit=-1, +-=0, */=1, ^=2, ()=3
+    # Priorities: +-=0, */=1, ^=2, ()=3, digit=4
     priorities = []
+
+    # Assign priorities in parallel list
     for idx, val in enumerate(tokens):
-        pri = -1
+        pri = 4
         if type(val) is list:
             pri = 3
         elif val in '^':
@@ -72,12 +74,29 @@ def generate_tree(tokens: list) -> Node:
             pri = 1
         elif val in '+-':
             pri = 0
-        priorities[idx] = pri
+        priorities.append(pri)
+
+    # Determine first item with lowest priority
+    least_priority = 4
+    least_idx = 0
+    for idx, pri in enumerate(priorities):
+        if pri < least_priority:
+            least_idx = idx
+            least_priority = pri
+
+    # Create node
+    data = tokens[least_idx]
+    left = generate_tree(tokens[:least_idx]) if len(tokens[:least_idx]) > 0 else None
+    right = generate_tree(tokens[least_idx + 1:]) if len(tokens[least_idx + 1:]) > 0 else None
+    return Node(data, left, right)
 
 
 def main():
     s = input('Input expression >> ')
-    print(tokenize(s))
+    tokens = tokenize(s)
+    print(tokens)
+    tree = generate_tree(tokens)
+    print(tree)
 
 
 if __name__ == '__main__':
