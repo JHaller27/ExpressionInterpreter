@@ -124,9 +124,7 @@ def generate_tree(tokens: list) -> Node:
 def main():
     s = input('Input expression >> ')
     tokens = tokenize(s)
-    print(tokens)
     tree = generate_tree(tokens)
-    print(tree)
     result = tree.resolve()
     print(result)
 
