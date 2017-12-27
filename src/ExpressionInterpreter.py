@@ -13,6 +13,32 @@ class Node:
     def __str__(self):
         return format('(%s <- %s -> %s)' % (self.left, self.data, self.right))
 
+    def resolve(self):
+        if self.data in OPERATORS:
+            if self.left is None or self.right is None:
+                raise SyntaxError("Operator must have two adjacent operands.")
+            left = self.left.resolve()
+            right = self.right.resolve()
+
+            if self.data is '+':
+                return left + right
+            elif self.data is '-':
+                return left - right
+            elif self.data is '*':
+                return left * right
+            elif self.data is '/':
+                result = left / right
+                return int(result) if result == int(result) else result
+            elif self.data is '^':
+                return left ** right
+            elif self.data is '%':
+                return left % right
+        else:
+            if '.' in self.data:
+                return float(self.data)
+            else:
+                return int(self.data)
+
 
 def tokenize(base):
     tokens = []
@@ -101,6 +127,8 @@ def main():
     print(tokens)
     tree = generate_tree(tokens)
     print(tree)
+    result = tree.resolve()
+    print(result)
 
 
 if __name__ == '__main__':
