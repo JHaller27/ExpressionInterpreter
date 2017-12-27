@@ -63,6 +63,10 @@ def generate_tree(tokens: list) -> Node:
     # Priorities: +-=0, */=1, ^=2, ()=3, digit=4
     priorities = []
 
+    # If only token is a list (ie parens), treat as own list
+    if len(tokens) == 1 and type(tokens[0]) is list:
+        tokens = tokens[0]
+
     # Assign priorities in parallel list
     for idx, val in enumerate(tokens):
         pri = 4
